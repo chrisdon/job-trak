@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="latvian_red">#9E1B34</color>
+    <color name="latvian_red_shade1">#8e182e</color>
+    <color name="latvian_red_shade2">#7e1529</color>
+    <color name="latvian_red_tint1">#a73148</color>
+    <color name="latvian_red_tint2">#b1485c</color>
+
+    <color name="divider_colour">#000000</color>
+</resources>
