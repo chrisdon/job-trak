@@ -1,16 +1,14 @@
 package uk.co.donnellyit.jobtrak.interactors;
 
-import java.util.Date;
 import java.util.Map;
 
-import uk.co.donnellyit.jobtrak.event.OnEventFetchedListener;
-import uk.co.donnellyit.jobtrak.model.Event;
+import uk.co.donnellyit.jobtrak.evententry.OnEventFetchedListener;
 
 /**
  * Created by chrisdonnelly on 26/12/15.
  */
 public interface EventFetchInteractor {
-    void fetchEvent(String id, OnEventFetchedListener listener);
-    void createEvent(OnEventFetchedListener listener);
-    void updateEvent(Map<String, Object> eventMap);
+    void fetchEvent(String jobId, String eventId, OnEventFetchedListener listener);
+    void createEvent(String jobId, OnEventFetchedListener listener);
+    void updateEvent(String jobId, Map<String, Object> eventMap);
 }

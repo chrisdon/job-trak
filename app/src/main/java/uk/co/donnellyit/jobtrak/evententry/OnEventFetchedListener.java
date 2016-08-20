@@ -1,4 +1,4 @@
-package uk.co.donnellyit.jobtrak.event;
+package uk.co.donnellyit.jobtrak.evententry;
 
 import uk.co.donnellyit.jobtrak.model.Event;
 

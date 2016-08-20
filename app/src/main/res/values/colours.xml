@@ -7,4 +7,8 @@
     <color name="latvian_red_tint2">#b1485c</color>
 
     <color name="divider_colour">#000000</color>
+    <color name="grey">#f2f2f2</color>
+    <color name="list_bg">#ebd1d6</color>
+    <color name="light_green">#55d0a1</color>
+    <color name="white">#ffffff</color>
 </resources>

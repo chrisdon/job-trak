@@ -1,11 +1,12 @@
-package uk.co.donnellyit.jobtrak.event;
+package uk.co.donnellyit.jobtrak.evententry;
 
 import uk.co.donnellyit.jobtrak.model.Event;
 
 /**
- * Created by chrisdonnelly on 20/12/15.
+ * Created by chrisdonnelly on 15/06/2016.
  */
-public interface EventView {
+
+public interface EventEntryView {
     void hideProgress();
     void showProgress();
     void displayEvent(Event event);

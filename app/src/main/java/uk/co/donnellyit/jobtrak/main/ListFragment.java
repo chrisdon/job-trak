@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.couchbase.lite.LiveQuery;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,8 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.donnellyit.jobtrak.BaseFragment;
 import uk.co.donnellyit.jobtrak.R;
-import uk.co.donnellyit.jobtrak.database.StorageManager;
-import uk.co.donnellyit.jobtrak.model.Event;
+import uk.co.donnellyit.jobtrak.model.Job;
 import uk.co.donnellyit.jobtrak.ui.LineDividerItemDecoration;
 
 /**
@@ -57,9 +54,9 @@ public class ListFragment extends BaseFragment implements ListView, View.OnClick
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addItemDecoration(new LineDividerItemDecoration(getActivity()));
+        //mRecyclerView.addItemDecoration(new LineDividerItemDecoration(getActivity()));
 
-        List<Event> dataset = new ArrayList<>();
+        List<Job> dataset = new ArrayList<>();
         mAdapter = new ListAdapter(dataset, this);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -75,13 +72,13 @@ public class ListFragment extends BaseFragment implements ListView, View.OnClick
     }
 
     public void refreshList() {
-        presenter.fetchEventList();
+        presenter.fetchJobList();
     }
 
     @Override
-    public void displayList(List<Event> eventList) {
-        if(eventList.size() > 0) {
-            mAdapter.setDataset(eventList);
+    public void displayList(List<Job> jobs) {
+        if(jobs.size() > 0) {
+            mAdapter.setDataset(jobs);
             mPlaceholder.setVisibility(View.INVISIBLE);
         } else {
             mPlaceholder.setVisibility(View.VISIBLE);
@@ -100,7 +97,7 @@ public class ListFragment extends BaseFragment implements ListView, View.OnClick
     }
 
     @Override
-    public void onError() {
+    public void onError(String msg) {
         mPlaceholder.setVisibility(View.VISIBLE);
     }
 
@@ -116,13 +113,13 @@ public class ListFragment extends BaseFragment implements ListView, View.OnClick
     @Override
     public void onClick(View v) {
 
-        getParentActivity().loadEventFragment(null);
+        getParentActivity().loadJobFragment(null);
     }
 
     @Override
     public void onItemCLicked(int position) {
-        Event event = mAdapter.getDataset().get(position);
-        getParentActivity().loadEventFragment(event.getId());
+        Job  job = mAdapter.getDataset().get(position);
+        getParentActivity().loadJobFragment(job.getId());
     }
 
 

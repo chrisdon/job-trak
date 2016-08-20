@@ -54,8 +54,9 @@ public class Event extends RealmObject implements Comparable<Event> {
     private Date date;
     private String notes;
     private Date eventDate;
-    private Job job;
     private Person correspondant;
+
+    private String outcome;
 
     public Event(){}
 
@@ -103,7 +104,13 @@ public class Event extends RealmObject implements Comparable<Event> {
         return properties;
     }
 
+    public String getOutcome() {
+        return outcome;
+    }
 
+    public void setOutcome(String outcome) {
+        this.outcome = outcome;
+    }
 
     public String getEventType() {
         return eventType;
@@ -145,14 +152,6 @@ public class Event extends RealmObject implements Comparable<Event> {
         this.eventDate = eventDate;
     }
 
-    public Job getJob() {
-        return job;
-    }
-
-    public void setJob(Job job) {
-        this.job = job;
-    }
-
     public Person getCorrespondant() {
         return correspondant;
     }
@@ -176,7 +175,6 @@ public class Event extends RealmObject implements Comparable<Event> {
         if (notes != null ? !notes.equals(event.notes) : event.notes != null) return false;
         if (eventDate != null ? !eventDate.equals(event.eventDate) : event.eventDate != null)
             return false;
-        if (job != null ? !job.equals(event.job) : event.job != null) return false;
         return correspondant != null ? correspondant.equals(event.correspondant) : event.correspondant == null;
 
     }
@@ -188,7 +186,6 @@ public class Event extends RealmObject implements Comparable<Event> {
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (notes != null ? notes.hashCode() : 0);
         result = 31 * result + (eventDate != null ? eventDate.hashCode() : 0);
-        result = 31 * result + (job != null ? job.hashCode() : 0);
         result = 31 * result + (correspondant != null ? correspondant.hashCode() : 0);
         return result;
     }

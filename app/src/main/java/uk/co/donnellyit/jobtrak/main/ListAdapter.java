@@ -14,12 +14,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.donnellyit.jobtrak.R;
 import uk.co.donnellyit.jobtrak.model.Event;
+import uk.co.donnellyit.jobtrak.model.Job;
 
 /**
  * Created by chrisdonnelly on 12/12/15.
  */
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
-    private List<Event> mDataset;
+    private List<Job> mDataset;
     private ListCLickListener mListListener;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -45,7 +46,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListAdapter(List<Event> myDataset, ListCLickListener listener) {
+    public ListAdapter(List<Job> myDataset, ListCLickListener listener) {
         mDataset = myDataset;
         mListListener = listener;
     }
@@ -56,7 +57,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                                                    int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_event, parent, false);
+                .inflate(R.layout.item_job, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v, mListListener);
         return vh;
@@ -67,24 +68,18 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        Event event = mDataset.get(position);
-        if(event.getJob().getTitle() != null && !event.getJob().getTitle().isEmpty()) {
-            holder.jobTitle.setText(event.getJob().getTitle());
+        Job job = mDataset.get(position);
+        if(job.getTitle() != null && !job.getTitle().isEmpty()) {
+            holder.jobTitle.setText(job.getTitle());
         } else {
             holder.jobTitle.setVisibility(View.GONE);
         }
 
-        if(event.getJob().getCompany().getName() != null &&
-                !event.getJob().getCompany().getName().isEmpty()) {
-            holder.companyName.setText(event.getJob().getCompany().getName());
+        if(job.getCompany().getName() != null &&
+                !job.getCompany().getName().isEmpty()) {
+            holder.companyName.setText(job.getCompany().getName());
         } else {
             holder.companyName.setVisibility(View.GONE);
-        }
-
-        if(event.getEventDate() == null) {
-            holder.time.setVisibility(View.GONE);
-        } else {
-            holder.time.setText(convertToDate(event.getEventDate()));
         }
 
     }
@@ -95,7 +90,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         return mDataset.size();
     }
 
-    public void setDataset(List<Event> dataset) {
+    public void setDataset(List<Job> dataset) {
         int newSetSize = dataset.size();
         int existingSetSize = mDataset.size();
         if(newSetSize > existingSetSize) {
@@ -131,7 +126,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         return dateString;
     }
 
-    public List<Event> getDataset() {
+    public List<Job> getDataset() {
         return mDataset;
     }
 

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/item_list_margin"
+        android:paddingRight="@dimen/item_list_margin"
+        android:paddingBottom="@dimen/appbar_padding">
+
+        <EditText
+            style="@style/jobs_edit"
+            android:id="@+id/job_title_edit"
+            android:hint="@string/hint_job_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            style="@style/jobs_edit"
+            android:id="@+id/job_company_edit"
+            android:hint="@string/hint_job_company"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                style="@style/jobs_edit"
+                android:id="@+id/job_salary_edit"
+                android:layout_weight="3"
+                android:hint="@string/hint_salary"
+                android:inputType="numberDecimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <Spinner
+                android:id="@+id/job_salary_spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <TextView
+            style="@style/job_header_large"
+            android:id="@+id/job_company"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+        <TextView
+            style="@style/job_header_large"
+            android:id="@+id/job_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+        <TextView
+            style="@style/job_header_large"
+            android:id="@+id/job_salary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/list_bg"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/event_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/job_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_white_48dp"
+        app:layout_anchor="@+id/appBar"
+        app:layout_anchorGravity="bottom|right|end"/>
+</android.support.design.widget.CoordinatorLayout>

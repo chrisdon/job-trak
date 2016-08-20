@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import uk.co.donnellyit.jobtrak.AppModule;
+import uk.co.donnellyit.jobtrak.interactors.JobFetchInteractor;
 import uk.co.donnellyit.jobtrak.interactors.ListInteractor;
 
 /**
@@ -28,7 +29,7 @@ public class ListModule {
     }
 
     @Provides @Singleton
-    public ListPresenter providePresenter(ListView mainView, ListInteractor findItemsInteractor) {
-        return new ListPresenterImpl(mainView, findItemsInteractor);
+    public ListPresenter providePresenter(ListView mainView, JobFetchInteractor jobFetchInteractor) {
+        return new ListPresenterImpl(mainView, jobFetchInteractor);
     }
 }

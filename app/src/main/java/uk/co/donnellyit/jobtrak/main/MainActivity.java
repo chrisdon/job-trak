@@ -12,14 +12,15 @@ import com.couchbase.lite.LiveQuery;
 
 import uk.co.donnellyit.jobtrak.R;
 import uk.co.donnellyit.jobtrak.database.StorageManager;
-import uk.co.donnellyit.jobtrak.event.EventFragment;
+import uk.co.donnellyit.jobtrak.evententry.EventEntryFragment;
+import uk.co.donnellyit.jobtrak.job.JobFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private LiveQuery liveQuery;
     private StorageManager mStorageManager;
     private ListFragment mListFragment;
-    private boolean mIsDisplayingEvent = false;
+    private String mCurrentlyDisplayedFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,15 +68,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void loadEventFragment(String eventId) {
+    public void loadJobFragment(String eventId) {
         // Create new fragment and transaction
-        EventFragment newFragment = EventFragment.getInstance(eventId);
+        JobFragment newFragment = JobFragment.getInstance(eventId);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         if(isTwoPane()) {
             transaction.add(R.id.detail_container, newFragment);
         } else {
-            mIsDisplayingEvent = true;
             // Replace whatever is in the fragment_container view with this fragment,
             // and add the transaction to the back stack
             transaction.replace(R.id.master_container, newFragment);
@@ -83,6 +83,27 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        mCurrentlyDisplayedFragment = JobFragment.TAG;
+
+        // Commit the transaction
+        transaction.commit();
+    }
+
+    public void loadEventEntryFragment(String jobId, String eventId) {
+        // Create new fragment and transaction
+        EventEntryFragment newFragment = EventEntryFragment.getInstance(eventId, jobId);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        if(isTwoPane()) {
+            transaction.add(R.id.detail_container, newFragment);
+        } else {
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack
+            transaction.replace(R.id.master_container, newFragment);
+            transaction.addToBackStack(null);
+
+        }
+        mCurrentlyDisplayedFragment = EventEntryFragment.TAG;
         // Commit the transaction
         transaction.commit();
     }
@@ -122,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         if(isTwoPane()) {
             super.onBackPressed();
         } else {
-            if(mIsDisplayingEvent) {
+            if(mCurrentlyDisplayedFragment.equals(JobFragment.TAG)) {
                 if(mListFragment == null) {
                     mListFragment = new ListFragment();
                 }
@@ -131,7 +152,10 @@ public class MainActivity extends AppCompatActivity {
                 transaction.addToBackStack(null);
                 transaction.commit();
 
-            } else {
+            } else if (mCurrentlyDisplayedFragment.equals(EventEntryFragment.TAG)) {
+                getFragmentManager().popBackStack();
+            }
+            else {
                 super.onBackPressed();
             }
         }

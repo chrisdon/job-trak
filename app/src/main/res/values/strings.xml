@@ -5,4 +5,11 @@
     <string name="hint_job_title">Job Title</string>
     <string name="hint_job_company">Company name</string>
     <string name="hint_notes">Notes</string>
+    <string name="hint_salary">Salary</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_save">Save</string>
+    <string-array name="salary_type">
+        <item>Per Day</item>
+        <item>Per Annum</item>
+    </string-array>
 </resources>

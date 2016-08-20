@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -24,33 +23,34 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.donnellyit.jobtrak.BaseFragment;
 import uk.co.donnellyit.jobtrak.R;
-import uk.co.donnellyit.jobtrak.event.EventFragment;
-import uk.co.donnellyit.jobtrak.event.EventModule;
-import uk.co.donnellyit.jobtrak.event.EventPresenter;
-import uk.co.donnellyit.jobtrak.event.EventView;
+import uk.co.donnellyit.jobtrak.job.JobFragment;
+import uk.co.donnellyit.jobtrak.job.JobModule;
+import uk.co.donnellyit.jobtrak.job.JobPresenter;
+import uk.co.donnellyit.jobtrak.job.JobView;
 import uk.co.donnellyit.jobtrak.fragment.DatePickerFragment;
 import uk.co.donnellyit.jobtrak.fragment.TimePickerFragment;
 import uk.co.donnellyit.jobtrak.main.MainActivity;
-import uk.co.donnellyit.jobtrak.model.Company;
 import uk.co.donnellyit.jobtrak.model.Event;
-import uk.co.donnellyit.jobtrak.model.Job;
 
 /**
  * Created by chrisdonnelly on 15/06/2016.
  */
 
-public class EventEntryFragment extends BaseFragment implements EventView, View.OnClickListener,
+public class EventEntryFragment extends BaseFragment implements EventEntryView, View.OnClickListener,
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
+    public final static String TAG = "EventEntryFragment";
     private final static String PARAM_EVENT_ID = "eventId";
+    private final static String PARAM_JOB_ID = "jobId";
 
     @BindView(R.id.event_date)
     TextView mEventDateTV;
     @BindView(R.id.event_time) TextView mEventTimeTV;
     @BindView(R.id.job_notes) TextView mEventNotesTV;
     @Inject
-    EventPresenter mPresenter;
+    EventEntryPresenter mPresenter;
     private String mEventId;
+    private String mJobId;
     private Calendar mEventTime;
     private Map<String, Object> mEventMap;
     SimpleDateFormat datesdf = new SimpleDateFormat(Event.DATE_FORMAT);
@@ -59,11 +59,15 @@ public class EventEntryFragment extends BaseFragment implements EventView, View.
     DatePicker dateView;
 
 
-    public static EventFragment getInstance(String eventId) {
-        EventFragment fragment = new EventFragment();
+    public static EventEntryFragment getInstance(String eventId, String jobId) {
+        EventEntryFragment fragment = new EventEntryFragment();
+        Bundle arguments = new Bundle();
         if(eventId != null) {
-            Bundle arguments = new Bundle();
             arguments.putString(PARAM_EVENT_ID, eventId);
+            fragment.setArguments(arguments);
+        }
+        if(jobId != null) {
+            arguments.putString(PARAM_JOB_ID, jobId);
             fragment.setArguments(arguments);
         }
         return fragment;
@@ -76,6 +80,9 @@ public class EventEntryFragment extends BaseFragment implements EventView, View.
         if(getArguments() != null && getArguments().containsKey(PARAM_EVENT_ID)) {
             mEventId = getArguments().getString(PARAM_EVENT_ID);
         }
+        if(getArguments() != null && getArguments().containsKey(PARAM_JOB_ID)) {
+            mJobId = getArguments().getString(PARAM_JOB_ID);
+        }
 
         mEventTime = Calendar.getInstance();
     }
@@ -83,7 +90,7 @@ public class EventEntryFragment extends BaseFragment implements EventView, View.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_event, container, false);
+        View root = inflater.inflate(R.layout.fragment_enter_details, container, false);
 
         ButterKnife.bind(this, root);
 
@@ -100,9 +107,9 @@ public class EventEntryFragment extends BaseFragment implements EventView, View.
         mEventTimeTV.setOnClickListener(this);
 
         if(mEventId != null) {
-            mPresenter.fetchEvent(mEventId);
+            mPresenter.fetchEvent(mEventId, mJobId);
         } else {
-            mPresenter.createEvent();
+            mPresenter.createEvent(mJobId);
         }
 
 
@@ -113,7 +120,7 @@ public class EventEntryFragment extends BaseFragment implements EventView, View.
 
     @Override
     protected List<Object> getModules() {
-        return Arrays.<Object>asList(new EventModule(this));
+        return Arrays.<Object>asList(new EventEntryModule(this));
     }
 
     @Override
@@ -127,7 +134,7 @@ public class EventEntryFragment extends BaseFragment implements EventView, View.
 
         mEventMap.put(Event.COLUMN_NOTES, mEventNotesTV.getText().toString().trim());
         mEventMap.put(Event.COLUMN_EVENTDATE, mEventTime.getTime());
-        mPresenter.updateEvent(mEventMap);
+        mPresenter.updateEvent(mJobId, mEventMap);
     }
 
     @Override
