@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -60,6 +61,7 @@ public class JobFragment extends BaseFragment implements JobView, EventAdapter.L
     @BindView(R.id.job_salary) TextView mJobSalary;
     @BindView(R.id.job_title) TextView mJobTitle;
     @BindView(R.id.job_company) TextView mJobCompany;
+    @BindView(R.id.job_swipeContainer) SwipeRefreshLayout mSwipeContainer;
 
     @Inject
     JobPresenter mPresenter;
@@ -142,6 +144,14 @@ public class JobFragment extends BaseFragment implements JobView, EventAdapter.L
 
         mFloatingActionButton.setOnClickListener(this);
 
+        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(mJobId != null) {
+                    mPresenter.fetchJob(mJobId);
+                }
+            }
+        });
     }
 
     @Override
@@ -210,6 +220,7 @@ public class JobFragment extends BaseFragment implements JobView, EventAdapter.L
             int index = getSalaryTypeIndex(salaryType);
             mSalarySpinner.setSelection(index);
         }
+        mSwipeContainer.setRefreshing(false);
         RealmConfiguration realmConfig = new RealmConfiguration.Builder(getActivity()).build();
         Realm realm = Realm.getInstance(realmConfig);
 

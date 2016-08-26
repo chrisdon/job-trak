@@ -2,6 +2,7 @@ package uk.co.donnellyit.jobtrak.main;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ public class ListFragment extends BaseFragment implements ListView, View.OnClick
     @BindView(R.id.placeholder) TextView mPlaceholder;
     @BindView(R.id.progress_bar) ProgressBar mProgressBar;
     @BindView(R.id.event_fab) FloatingActionButton mFloatingActionButton;
+    @BindView(R.id.swipeContainer) SwipeRefreshLayout mSwipeContainer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,6 +64,13 @@ public class ListFragment extends BaseFragment implements ListView, View.OnClick
 
         mFloatingActionButton.setOnClickListener(this);
 
+        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshList();
+            }
+        });
+
     }
 
     @Override
@@ -83,7 +92,7 @@ public class ListFragment extends BaseFragment implements ListView, View.OnClick
         } else {
             mPlaceholder.setVisibility(View.VISIBLE);
         }
-
+        mSwipeContainer.setRefreshing(false);
     }
 
     @Override

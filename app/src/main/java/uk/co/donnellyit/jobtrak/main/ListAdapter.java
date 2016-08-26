@@ -121,6 +121,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         }
     }
 
+    public void clear() {
+        mDataset.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addAll(List<Job> newDataset) {
+        mDataset.addAll(newDataset);
+        notifyDataSetChanged();
+    }
+
     private String convertToDate(Date date) {
         String dateString = DateFormat.format("MMM dd yyyy HH:mm", date).toString();
         return dateString;
