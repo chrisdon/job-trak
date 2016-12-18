@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -62,6 +63,8 @@ public class JobFragment extends BaseFragment implements JobView, EventAdapter.L
     @BindView(R.id.job_title) TextView mJobTitle;
     @BindView(R.id.job_company) TextView mJobCompany;
     @BindView(R.id.job_swipeContainer) SwipeRefreshLayout mSwipeContainer;
+    @BindView(R.id.job_edit_layout) LinearLayout mEditLayout;
+    @BindView(R.id.job_layout) LinearLayout mTextViewLayout;
 
     @Inject
     JobPresenter mPresenter;
@@ -88,8 +91,14 @@ public class JobFragment extends BaseFragment implements JobView, EventAdapter.L
 
         if(getArguments() != null && getArguments().containsKey(PARAM_JOB_ID)) {
             mJobId = getArguments().getString(PARAM_JOB_ID);
+            mDisplayEdit = true;
+
+        } else {
             mDisplayEdit = false;
+
         }
+        getActivity().invalidateOptionsMenu();
+
         setHasOptionsMenu(true);
     }
 
@@ -107,11 +116,19 @@ public class JobFragment extends BaseFragment implements JobView, EventAdapter.L
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.job_edit:
-
+                mEditLayout.setVisibility(View.VISIBLE);
+                mTextViewLayout.setVisibility(View.GONE);
+                mDisplayEdit = !mDisplayEdit;
+                getActivity().invalidateOptionsMenu();
+                populateEdits();
                 break;
 
             case R.id.job_save:
-
+                mEditLayout.setVisibility(View.GONE);
+                mTextViewLayout.setVisibility(View.VISIBLE);
+                mDisplayEdit = !mDisplayEdit;
+                getActivity().invalidateOptionsMenu();
+                populateTextViews();
                 break;
         }
         return true;
@@ -133,6 +150,14 @@ public class JobFragment extends BaseFragment implements JobView, EventAdapter.L
         super.onActivityCreated(savedInstanceState);
 
         mJobMap = new HashMap<>();
+
+        if(mDisplayEdit) {
+            mEditLayout.setVisibility(View.GONE);
+            mTextViewLayout.setVisibility(View.VISIBLE);
+        } else {
+            mEditLayout.setVisibility(View.VISIBLE);
+            mTextViewLayout.setVisibility(View.GONE);
+        }
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mEventList.setLayoutManager(mLayoutManager);
@@ -282,4 +307,13 @@ public class JobFragment extends BaseFragment implements JobView, EventAdapter.L
         }
         return 0;
     }
+
+    private void populateEdits(){
+
+    }
+
+    private void populateTextViews() {
+
+    }
+
 }
